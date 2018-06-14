@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-// import './lib/bip39/src/js/polyfill.es6';
-// import './lib/bip39/src/js/basex';
-// import './lib/bip39/src/js/jquery-3.2.1';
-// import './lib/bip39/src/js/index';
+import Button from './components/Button';
+
 
 class App extends Component {
   render() {
@@ -15,16 +13,13 @@ class App extends Component {
           <h1 className="App-title">Identity Proof of Concept</h1>
         </header>
         <p className="App-intro">
-          This is where it begins. {this.test()}!
+          Your identity shall be secured. {this.test()}!
         </p>
       </div>
     );
   }
   test() {
-    var phrase = "cats";
-    // var phrase = window.index.generateRandomPhrase();
-    // var phrase = window.generateRandomPhrase();
-    // window.jason.
+    const phrase = window.jason.generateRandomPhrase();
 
     return phrase;
   }

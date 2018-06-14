@@ -7,3 +7,18 @@ series of words they should remember. Once generated, their identity data should
 local browser in a secure manner.)
 
 More Info at https://github.com/OpenBazaar/openbazaar-web/issues/4
+
+Instructions (TODO: Clean this up later.)
+
+# IDE 'Intellisense'
+AJV: Another JSON Schema Validator (Required for @types/react)
+https://github.com/epoberezkin/ajv
+```
+npm install ajv --save-dev
+```
+
+React Types
+```
+npm i @types/react --save-dev
+```
+

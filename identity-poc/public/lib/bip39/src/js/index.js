@@ -1,5 +1,8 @@
-(function() {
+MARY = typeof MARY == "undefined" ? {} : MARY;
 
+console.log('mary mary mary');
+(function( jason, $, undefined ) {
+    "use strict";
     // mnemonics is populated as required by getLanguage
     var mnemonics = { "english": new Mnemonic("english") };
     var mnemonic = mnemonics["english"];
@@ -403,7 +406,7 @@
         showPending();
         setTimeout(function() {
             setMnemonicLanguage();
-            var phrase = generateRandomPhrase();
+            var phrase = jason.generateRandomPhrase();
             if (!phrase) {
                 return;
             }
@@ -462,14 +465,14 @@
 
     // Private methods
 
-    function generateRandomPhrase() {
+    jason.generateRandomPhrase = function() {
         if (!hasStrongRandom()) {
             var errorText = "This browser does not support strong randomness";
             showValidationError(errorText);
             return;
         }
         // get the amount of entropy to use
-        var numWords = parseInt(DOM.generatedStrength.val());
+        var numWords = parseInt(DOM.generatedStrength.val() || 12);
         var strength = numWords / 3 * 32;
         var buffer = new Uint8Array(strength / 8);
         // create secure entropy
@@ -2482,4 +2485,6 @@
 
     init();
 
-})();
+}( window.jason = window.jason || {}, jQuery ));
+console.log("end of file!");
+console.log("jason: " + MARY);

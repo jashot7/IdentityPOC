@@ -1,2 +1,6 @@
 
 \.DS_Store
+
+\.vscode/
+
+identity-poc/package-lock\.json
