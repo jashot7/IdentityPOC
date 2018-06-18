@@ -13,7 +13,7 @@ class App extends Component {
           <h1 className="App-title">Identity Proof of Concept</h1>
         </header>
         <p className="App-intro">
-          Your identity shall be secured. {this.test()}!
+          Your identity shall be secured: <span className='randomPhrase'>{this.test()}</span>
         </p>
       </div>
     );
