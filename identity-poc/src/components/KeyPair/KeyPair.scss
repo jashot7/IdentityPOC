@@ -1,0 +1,18 @@
+.key-pair {
+  padding: 5px;
+
+  .label, .value {
+    padding: 10px;
+  }
+
+  .label {
+    // border: 1px solid red;
+    margin-right: 10px;
+  }
+
+  .value {
+    // border: 1px solid green;
+    margin-left: 10px;
+    color:  greenyellow;
+  }
+}

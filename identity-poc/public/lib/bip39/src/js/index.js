@@ -1,7 +1,5 @@
-MARY = typeof MARY == "undefined" ? {} : MARY;
-
-console.log('mary mary mary');
-(function( jason, $, undefined ) {
+// Jason: I made parts of this accessible globally under 'iancoleman' as a temporary hack to play around.
+(function( iancoleman, $, undefined ) {
     "use strict";
     // mnemonics is populated as required by getLanguage
     var mnemonics = { "english": new Mnemonic("english") };
@@ -406,7 +404,7 @@ console.log('mary mary mary');
         showPending();
         setTimeout(function() {
             setMnemonicLanguage();
-            var phrase = jason.generateRandomPhrase();
+            var phrase = iancoleman.generateRandomPhrase();
             if (!phrase) {
                 return;
             }
@@ -465,7 +463,7 @@ console.log('mary mary mary');
 
     // Private methods
 
-    jason.generateRandomPhrase = function() {
+    iancoleman.generateRandomPhrase = function() {
         if (!hasStrongRandom()) {
             var errorText = "This browser does not support strong randomness";
             showValidationError(errorText);
@@ -2485,6 +2483,4 @@ console.log('mary mary mary');
 
     init();
 
-}( window.jason = window.jason || {}, jQuery ));
-console.log("end of file!");
-console.log("jason: " + MARY);
+}( window.iancoleman = window.iancoleman || {}, jQuery ));
