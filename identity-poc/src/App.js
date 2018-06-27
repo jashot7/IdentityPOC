@@ -4,17 +4,10 @@ import './App.css';
 import Button from './components/Button/Button';
 import KeyPair from './components/KeyPair/KeyPair';
 import PeerId from 'peer-id';
-import Mnemonic from 'bitcore-mnemonic';
-import ipfs from 'ipfs';
-import libp2p from 'libp2p';
-import * as pipto from 'libp2p-crypto';
-import CryptoJS from 'crypto-js';
-import bip39 from 'bip39';
-import bip32 from 'bip32';
-import base64 from 'base64-js';
-
-// import Crypto from 'libp2p-crypto';
-
+import * as Libp2pCrypto from 'libp2p-crypto';
+import Bip39 from 'bip39';
+import Bip32 from 'bip32';
+import Base64 from 'base64-js';
 
 class App extends Component {
 
@@ -24,10 +17,15 @@ class App extends Component {
     const strGenerating = 'Generating...';
 
     this.state = {
-      mnemonic: strGenerating,
-      HDPrivateKey: strGenerating,
-      HDPublicKey: strGenerating,
-      peerId: strGenerating
+      bip39Mnemonic: strGenerating,
+      secretPassphrase: strGenerating,
+      bip39Seed: strGenerating,
+      bip32PrivateKeyBTC: strGenerating,
+      bip32PublicKeyBTC: strGenerating,
+      numBitsForIdentityGeneration: strGenerating,
+      edd2519PrivateKey: strGenerating,
+      edd2519PublicKey: strGenerating,
+      peerID: strGenerating
     };
 
   }
@@ -37,117 +35,87 @@ class App extends Component {
   }
 
   init() {
-    // Generate the Mnemonic
-    const mnemonic = this.generateMnemonicUsingLibrary();
+    // 1. ----- Generate the Mnemonic -----
 
-    // Generate a private HD key from the Mnemonic.
-    // const HDPrivateKey = mnemonic.toHDPrivateKey();
-    // console.log(HDPrivateKey);
+    // From BIP39 Library
+    /* Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits
+      of entropy Ex. 'seed sock milk update focus rotate barely fade car face mechanic mercy'
+     */
+    const bip39Mnemonic = Bip39.generateMnemonic()
 
-    // Generate PeerID
-    // const peerID = this.generatePeerId(HDPrivateKey);
+    // 2. ----- Generate a seed from the Mnemonic using an optional secret passphrase -----
+    const secretPassphrase = 'Secret Passphrase';
+    const bip39Seed = Bip39.mnemonicToSeed(bip39Mnemonic, secretPassphrase);
 
-    // const seed = bip39.mnemonicToSeedHex(mnemonic);
-    const mnemonicHardcoded = 'mule track design catch stairs remain produce evidence cannon opera hamster burst';
-    const seed = bip39.mnemonicToSeed(mnemonicHardcoded, "Secret Passphrase");
-    const network = 'litecoin'; // 'litecoin' ||
-    const bip32MasterKey = bip32.fromSeed(seed);
-    console.log(`bip32Private Bitcoin: ${bip32MasterKey.privateKey.toString('hex')}`);
-    console.log(`bip32Public BItcoin: ${bip32MasterKey.publicKey.toString('hex')}`);
-    const node = bip32.fromBase58('xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi');
-    // const testSeed = "08011260499228645d120d15b5008b1da0b9dba898df328001ea03c0be84a64c41d205ff1b8339a303cd8cf2945b66c89ac29fa90e79731d67000694284791af404eeb1f1b8339a303cd8cf2945b66c89ac29fa90e79731d67000694284791af404eeb1f";
-    // var enc = new TextEncoder(); // always utf-8
-    // const encodedSeed = enc.encode(testSeed);
-    const bits = 4096;
-    this.identityKeyFromSeed(seed, bits);
+    // 3. ----- Generate the BIP32 Keys for specific coins-----
+    const bip32MasterKeyBTC = Bip32.fromSeed(bip39Seed); // Default is BITCOIN
+    const bip32PrivateKeyBTC = bip32MasterKeyBTC.privateKey.toString('hex');
+    const bip32PublicKeyBTC = bip32MasterKeyBTC.publicKey.toString('hex');
 
-    // Save State
-    this.setState({
-      ...this.state,
-      mnemonic: mnemonic,
-       seed: seed,
-      // HDPrivateKey: HDPrivateKey,
-      // HDPublicKey: HDPrivateKey.hdPublicKey,
-      // peerID: peerID
-    })
+    // 4. ----- Generate Identity Key -----
+    const numBits = 4096;
+    this.identityKeyFromSeed(bip39Seed, numBits, (edd2519PrivateKey) => {
+      const edd2519PublicKey = edd2519PrivateKey.public;
+
+      this.identityFromKey(edd2519PrivateKey.bytes, (base58PrivKey, peerID) => {
+
+        const newState = {
+          ...this.state,
+          bip39Mnemonic: bip39Mnemonic,
+          secretPassphrase: secretPassphrase,
+          bip39Seed: bip39Seed.toString('hex'),
+          bip32PrivateKeyBTC: bip32PrivateKeyBTC.toString('hex'),
+          bip32PublicKeyBTC: bip32PublicKeyBTC.toString('hex'),
+          numBitsForIdentityGeneration: numBits,
+          edd2519PrivateKey: edd2519PrivateKey.bytes.toString('hex'),
+          edd2519PublicKey: edd2519PublicKey.bytes.toString('hex'),
+          peerID: peerID
+        }
+
+        this.setState({...this.state, ...newState});
+
+      });
+    });
   }
 
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={spyLogo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Identity Proof of Concept</h1>
-        </header>
-        <p className="App-intro">
-          <Button callback={() => this.handleGenerate()}>Re-Generate</Button>
-        </p>
-        <KeyPair label='Mnemonic:' value={this.state.mnemonic}/>
-        <KeyPair label='Seed:' value={this.state.seed}/>
-        <KeyPair label='HD Private Key:' value={this.state.HDPrivateKey.toString()}/>
-        <KeyPair label='HD Public Key:' value={this.state.HDPublicKey.toString()}/>
-        <KeyPair label='The ID for Thine Peer:' value={this.state.peerId}/>
+        <div className='grid-container'>
+          <header className="App-header">
+            <img src={spyLogo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Identity Proof of Concept</h1>
+          </header>
+          <aside><Button callback={() => this.handleGenerate()}>Re-Generate</Button></aside>
+          <section>
 
-        {/* State & Props Debugging */}
-        <span className='state-debug'>State: {JSON.stringify(this.state)} Props: {JSON.stringify(this.props)}</span>
+            <div className='values-container'>
+              <KeyPair label='BIP39 Mnemonic:' value={this.state.bip39Mnemonic}/>
+              <KeyPair label='Secret Passphrase:' value={this.state.secretPassphrase}/>
+              <KeyPair label='BIP39 Seed:' value={this.state.bip39Seed}/>
+              <KeyPair label='BIP32 Public Key (BTC)' value={this.state.bip32PublicKeyBTC}/>
+              <KeyPair label='BIP32 Private Key (BTC)' value={this.state.bip32PrivateKeyBTC}/>
+              <KeyPair label='Bits for EDD2519 Identity Generation:' value={this.state.numBitsForIdentityGeneration}/>
+              <KeyPair label='EDD2519 Private Key:' value={this.state.edd2519PrivateKey}/>
+              <KeyPair label='EDD2519 Public Key:' value={this.state.edd2519PublicKey}/>
+              <KeyPair label='Peer ID:' value={this.state.peerID}/>
+            </div>
+          </section>
+          <aside><p>The user's identity (The user's identity (public and private keys, peerID) will be generated from a
+series of words they should remember. Once generated, their identity data should be stored in their
+local browser in a secure manner.)</p>
 
+More Info at <a href='https://github.com/OpenBazaar/openbazaar-web/issues/4'>github issue</a></aside>
+          <footer>Jason Hotelling</footer>
+
+        </div>
       </div>
     );
   }
 
   handleGenerate() {
-    console.log('generating...');
-    this.setState({mnemonic: this.generateMnemonic(), peerId: this.generatePeerId()})
-  }
-
-  generateMnemonicIanColeman() {
-    return window.iancoleman.generateRandomPhrase()
-  }
-
-  generateMnemonicUsingLibrary() {
-    // From Mnemonic Library (bitcore)
-    // var mnemonic = new Mnemonic(Mnemonic.Words.ENGLISH);
-    // // const mnemonicString = mnemonic.toString(); // natal hada sutil año sólido papel jamón combate aula flota ver esfera...
-    // return mnemonic;
-
-    // From BIP39 Library
-    // Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits of entropy
-    var mnemonic = bip39.generateMnemonic() // => 'seed sock milk update focus rotate barely fade car face mechanic mercy'
-
-    bip39.mnemonicToSeedHex('basket actual')
-
-    return mnemonic;
-  }
-
-  generatePrivateKey() {
-    const privateKey = this.state.mnemonic.toHDPrivateKey()
-
-    return privateKey
-  }
-
-  generatePeerId(privateKey) {
-    console.log(`privateKey to generate peerID: ${privateKey}`);
-    const that = this;
-    PeerId.create({ bits: 1024 }, (err, id) => {
-      if (err) { throw err }
-      console.log(JSON.stringify(id.toJSON(), null, 2))
-    })
-    // PeerId.createFromPubKey(publicKey, (peerID) => {
-    //   console.log(`peerID: ${peerID}`);
-    //   that.setState({...that.state, peerID: peerID});
-    // })
-    // PeerId.createFromPrivKey(publicKey, (peerID) => {
-    //   console.log(`peerID: ${peerID}`);
-    //   that.setState({...that.state, peerID: peerID});
-    // })
-    // PeerId.createFromHexString(publicKey, (peerID) => {
-    //   console.log(`peerID: ${peerID}`);
-    //   that.setState({...that.state, peerID: peerID});
-    // })
-
-    this.identityFromKey(privateKey)
-
+    this.init();
   }
 
   /*
@@ -157,97 +125,38 @@ class App extends Component {
     a cryptographic hash that uses a key to sign a message. The receiver verifies the hash by
     recomputing it using the same key.
   */
-  identityKeyFromSeed(seed, bits) {
-    console.log('generating ED25519 keypair...');
-    // const keypair = pipto.keys.generateKeyPairFromSeed('ed25519', seed, bits, (e) => {
-    //   console.log('we did it');
-    // })
+  identityKeyFromSeed(seed, bits, cb) {
 
-    let hash = 'SHA256' // 'SHA256' || 'SHA512'
+    const hash = 'SHA256'
+    const hmacSeed = 'OpenBazaar seed';
 
-    pipto.hmac.create(hash, Buffer.from('OpenBazaar seed'), (err, hmac) => {
+    Libp2pCrypto.hmac.create(hash, Buffer.from(hmacSeed), (err, hmac) => {
       if (!err) {
         hmac.digest(Buffer.from(seed), (err, sig) => {
           if (!err) {
-            console.log(sig)
-                const keypair = pipto.keys.generateKeyPairFromSeed('ed25519', sig, bits, (err, privKey) => {
-                  console.log('we did it');
-                  const pubKey = privKey.public;
-                  console.log(`privKey: ${privKey}, pubKey: ${pubKey}`);
-                  const keyHex = '08011260499228645d120d15b5008b1da0b9dba898df328001ea03c0be84a64c41d205ff1b8339a303cd8cf2945b66c89ac29fa90e79731d67000694284791af404eeb1f1b8339a303cd8cf2945b66c89ac29fa90e79731d67000694284791af404eeb1f';
-                  var enc = new TextEncoder(); // always utf-8
-                  var dec = new TextDecoder();
-                  // const decodedSeed = dec.decode(keyHex);
-                  const encodedKey = Array.from(privKey.bytes);
-                  const keyHexInBytes = this.hexToBytes(keyHex);
-                  console.log(`Are they equal? ${this.arraysEqual(encodedKey, keyHexInBytes)}`);
+            Libp2pCrypto.keys.generateKeyPairFromSeed('ed25519', sig, bits, (err, privKey) => {
 
-                  this.identityFromKey(privKey.bytes);
-                })
+              // Possibly use the below to do a check/test.
+              // const keyHex = '08011260499228645d120d15b5008b1da0b9dba898df328001ea03c0be84a64c41d205ff1b8339a303cd8cf2945b66c89ac29fa90e79731d67000694284791af404eeb1f1b8339a303cd8cf2945b66c89ac29fa90e79731d67000694284791af404eeb1f';
+
+              // const encodedKey = Array.from(privKey.bytes);
+              // const keyHexInBytes = this.hexToBytes(keyHex);
+              // console.log(`Are they equal? ${this.arraysEqual(encodedKey, keyHexInBytes)}`);
+
+              cb(privKey);
+            })
           }
         })
       }
     })
   }
 
-  identityFromKey(privKey) {
-
-
-    console.log(' ----- identityFromKey! ----- ')
-    pipto.keys.unmarshalPrivateKey(privKey, (err, base58PrivKey) => {
-      var identity = {privKey: '', peerID: ''};
-      console.log(`base58PrivKey: ${base58PrivKey}`)
-
-      identity.privKey = base64.fromByteArray(base58PrivKey.bytes);
-      console.log(JSON.stringify(identity));
-
-      // Do Peer ID NOW!
-      const inBytes = base58PrivKey.bytes;
-      const regular = base58PrivKey.public;
-      const daKey = base58PrivKey.public._key;
+  identityFromKey(privKey, cb) {
+    Libp2pCrypto.keys.unmarshalPrivateKey(privKey, (err, base58PrivKey) => {
       PeerId.createFromPubKey(base58PrivKey.public.bytes, (err, peerID) => {
-        console.log(`peerID: ${peerID._idB58String}`);
-        identity.peerID = peerID._idB58String;
-        // that.setState({...that.state, peerID: peerID});
-        console.log(JSON.stringify(identity));
+        cb(Base64.fromByteArray(base58PrivKey.bytes), peerID._idB58String);
       });
     })
-    // const node = new ipfs().libp2p;
-    // // console.log(`crypto? : ${ipfs.utils.crypto}`);
-    // // console.log(`crypto is: ${crypto}`);
-    // // // console.log(Poop.generateKeyPair.toString());
-    // // // console.log(`libp2p: ${libp2p}`);
-    // console.log(pipto.keys);
-    // const exKey = [1,2,3];
-    // var sk = pipto.keys.unmarshalPrivateKey(exKey, (sk) => {
-    //   console.log(`thisis the unmarshaled private key:${sk}`);
-    // })
-
-    // const key = pipto.pbkdf2('passwordbah', 'encryptoid', 5000, 24, 'sha2-256')
-    //   // We're only using the key once, so a fixed IV should be ok
-    //   const iv = Buffer.from([...Array(16).keys()])
-    //   // Create AES encryption object
-    //   // crypto.aes.create(Buffer.from(key), iv, (err, cipher) => {
-    //   //   if (!err) {
-    //   //     cipher.encrypt(Buffer.from('somemessage'), async (err, encrypted) => {
-    //   //       if (!err) {
-    //   //         const hashed = (await ipfs.files.add(encrypted))[0]
-    //   //         console.log(`/ipfs/${hashed.hash}`);
-    //   //       }
-    //   //     })
-    //   //   }
-    //   // })
-
-    //   this.identityFromSeed('a','b');
-
-
-  }
-
-  identityFromSeed(seed, bits) {
-    // HMAC Sha256 the seed using 'OpenBazaar Seed'
-    const test = CryptoJS.HmacSHA256("test", "secret").toString(CryptoJS.enc.Hex);
-    console.log(`test: ${test.toString()}`);
-    // pipto.keys.gener
   }
 
   // Convert a hex string to a byte array

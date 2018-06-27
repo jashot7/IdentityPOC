@@ -2,17 +2,6 @@ html {
   background: black;
   color: white; }
 
-.state-debug {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  height: 150px;
-  width: 98%;
-  margin: 10px;
-  border: 3px solid darkslategrey;
-  background-color: darkblue;
-  color: greenyellow; }
-
 .App {
   text-align: center; }
 
@@ -47,3 +36,38 @@ html {
 
 .randomPhrase {
   color: orangered; }
+
+/* Simple CSS Grid Stuffs */
+.grid-container {
+  display: grid;
+  grid-gap: 15px;
+  height: 100vh;
+  grid-template-areas: "header" "section" "aside-1" "aside-2" "footer"; }
+
+@media (min-width: 700px) {
+  .grid-container {
+    grid-template-areas: "header header header" "aside-1 aside-1 aside-1" "section section section" "aside-2 aside-2 aside-2" "footer footer footer"; } }
+
+/* All grid items */
+.container > * {
+  border: 1px solid red; }
+
+header {
+  grid-area: header; }
+
+aside:nth-of-type(1) {
+  grid-area: aside-1; }
+
+section {
+  grid-area: section; }
+
+aside:nth-of-type(2) {
+  grid-area: aside-2; }
+
+footer {
+  grid-area: footer; }
+
+.values-container {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: auto; }

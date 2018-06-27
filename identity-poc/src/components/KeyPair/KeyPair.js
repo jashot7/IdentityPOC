@@ -19,10 +19,12 @@ class KeyPair extends Component {
 
   render() {
     return (
-      <p className="key-pair">
-        <span className='label'>{this.state.label}</span>
-        <span className='value'>{this.state.value}</span>
-      </p>
+      <div className="key-pair-container">
+        {/* <span className='label'>{this.state.label}</span>
+        <span className='value'>{this.state.value}</span> */}
+        <div className="key">{this.state.label}</div>
+        <div className="value">{this.state.value}</div>
+      </div>
     )
   }
 
