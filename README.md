@@ -8,9 +8,16 @@ local browser in a secure manner.)
 
 More Info at https://github.com/OpenBazaar/openbazaar-web/issues/4
 
-Instructions (TODO: Clean this up later.)
+Instructions:
 
-# IDE 'Intellisense'
+# Running
+```
+npm install
+npm start
+```
+
+_____
+## IDE 'Intellisense'
 AJV: Another JSON Schema Validator (Required for @types/react)
 https://github.com/epoberezkin/ajv
 ```
