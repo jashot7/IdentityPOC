@@ -59,11 +59,11 @@ html {
   height: 100vh;
   grid-template-areas:
     "header"
-    "section"
     "aside-1"
+    "section"
     "aside-2"
     "footer";
-  grid-template-rows: 100px 50px auto 100px 50px;
+  grid-template-rows: 100px 60px auto 130px 60px;
 }
 
 @media (min-width: 700px) {
