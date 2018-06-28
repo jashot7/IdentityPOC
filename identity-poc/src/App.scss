@@ -17,7 +17,6 @@ html {
 
 .App-header {
   background-color: #222;
-  height: 150px;
   padding: 20px;
   color: white;
 }
@@ -30,14 +29,26 @@ html {
   font-size: large;
 }
 
-@keyframes Spy-anim{
-    0% {transform: scale(0.1, 0.1); transform: translate(-100px, 20px); opacity: 0.0;}
-    50% {opacity: 1.0;}
-    100% {transform: scale(1.1, 1.1); opacity: 0.0;}
+/** Simple Spy Animation */
+
+.element-animation{
+  animation: Spy-anim ease-in-out 10s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
 }
 
-.randomPhrase {
-  color: orangered;
+@keyframes Spy-anim{
+  0% {
+    transform: translate(-55vw, -60px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 100;
+  }
+  100% {
+    transform: translate(50vw, -60px);
+    opacity: 0;
+  }
 }
 
 /* Simple CSS Grid Stuffs */
@@ -52,6 +63,7 @@ html {
     "aside-1"
     "aside-2"
     "footer";
+  grid-template-rows: 100px 50px auto 100px 50px;
 }
 
 @media (min-width: 700px) {

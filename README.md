@@ -10,13 +10,19 @@ More Info at https://github.com/OpenBazaar/openbazaar-web/issues/4
 
 Instructions:
 
-# Running
+# Installation & Running
+
+_Note: Ensure you're in the identity-poc directory nested within IdentityPOC._
 ```
-npm install
-npm start
+/IdentityPOC/identity-poc$ npm install
+/IdentityPOC/identity-poc$ npm start
 ```
 
 _____
+# Development
+
+```
+```
 ## IDE 'Intellisense'
 AJV: Another JSON Schema Validator (Required for @types/react)
 https://github.com/epoberezkin/ajv
