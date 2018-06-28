@@ -78,8 +78,9 @@ html {
 }
 
 /* All grid items */
-.container > * {
-  border: 1px solid red;
+.grid-container > * {
+  border: 1px solid rgba(50,50,50,0.5);
+  padding: 5px;
 }
 
 header {
