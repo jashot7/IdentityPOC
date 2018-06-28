@@ -4,6 +4,8 @@ import './App.css';
 import Button from './components/Button/Button';
 import KeyPair from './components/KeyPair/KeyPair';
 import PeerId from 'peer-id';
+import multihashing from './multihashing-async';
+import multihashes from './multihashes';
 import * as Libp2pCrypto from 'libp2p-crypto';
 import Bip39 from 'bip39';
 import Bip32 from 'bip32';
