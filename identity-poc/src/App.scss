@@ -43,7 +43,7 @@ html {
     opacity: 0;
   }
   50% {
-    opacity: 100;
+    opacity: 50;
   }
   100% {
     transform: translate(50vw, -60px);
@@ -68,6 +68,11 @@ html {
 
 @media (min-width: 700px) {
   .grid-container {
+    > * {
+      border: 5px solid rgba(50,50,50,0.5);
+      padding: 5px;
+    }
+
     grid-template-areas:
       "header header header"
       "aside-1 aside-1 aside-1"
@@ -75,12 +80,6 @@ html {
       "aside-2 aside-2 aside-2"
       "footer footer footer";
   }
-}
-
-/* All grid items */
-.grid-container > * {
-  border: 1px solid rgba(50,50,50,0.5);
-  padding: 5px;
 }
 
 header {
@@ -104,6 +103,11 @@ footer {
 }
 
 .values-container {
+  > * {
+    // border: 1px solid red;
+    padding: 5px;
+  }
+
   display: grid;
   grid-gap: 20px;
   grid-template-columns: auto;

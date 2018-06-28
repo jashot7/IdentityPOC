@@ -1,25 +1,28 @@
 .key-pair-container {
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: auto; }
-  .key-pair-container .key {
-    color: greenyellow; }
-  .key-pair-container .value {
-    text-align: left;
-    word-wrap: break-word;
-    color: blue; }
-
-@media (min-width: 700px) {
-  .key-pair-container {
-    display: grid;
-    grid-gap: 20px;
-    grid-template-columns: auto 200px; }
-    .key-pair-container .key {
-      text-align: right;
-      width: 300px; }
-    .key-pair-container .value {
-      width: 20vw; } }
-
-@media (max-width: 700px) {
-  .key-pair-container .value {
-    width: 90vw; } }
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-content: stretch;
+  align-items: center; }
+  @media (max-width: 700px) {
+    .key-pair-container {
+      flex-direction: column; } }
+  .key-pair-container .item {
+    padding: 5px;
+    align-self: auto;
+    word-break: break-all;
+    max-width: 80%; }
+    @media (max-width: 700px) {
+      .key-pair-container .item {
+        max-width: 98%; } }
+    .key-pair-container .item.key {
+      flex: 0 0 auto;
+      color: greenyellow;
+      text-align: right; }
+    .key-pair-container .item.value {
+      flex: 1 0 auto;
+      color: blue; }
+      @media (max-width: 700px) {
+        .key-pair-container .item.value {
+          align-self: flex-start; } }

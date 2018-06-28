@@ -22,8 +22,8 @@ class KeyPair extends Component {
       <div className="key-pair-container">
         {/* <span className='label'>{this.state.label}</span>
         <span className='value'>{this.state.value}</span> */}
-        <div className="key">{this.state.label}</div>
-        <div className="value">{this.state.value}</div>
+        <div className="item key">{this.state.label}</div>
+        <div className="item value">{this.state.value}</div>
       </div>
     )
   }
