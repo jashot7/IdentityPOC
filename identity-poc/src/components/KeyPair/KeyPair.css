@@ -18,11 +18,11 @@
         max-width: 98%; } }
     .key-pair-container .item.key {
       flex: 0 0 auto;
-      color: greenyellow;
+      color: green;
       text-align: right; }
     .key-pair-container .item.value {
       flex: 1 0 auto;
-      color: blue; }
+      color: white; }
       @media (max-width: 700px) {
         .key-pair-container .item.value {
           align-self: flex-start; } }

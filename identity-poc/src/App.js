@@ -89,7 +89,7 @@ class App extends Component {
             <img src={spyLogo} className="App-logo" alt="logo" />
             <h1 className="App-title">Identity Proof of Concept</h1>
           </header>
-          <aside><Button callback={() => this.handleGenerate()}>Re-Generate</Button></aside>
+          <aside className="aside-generate"><Button callback={() => this.handleGenerate()}>Re-Generate</Button></aside>
           <section>
 
             <div className='values-container'>
@@ -109,8 +109,7 @@ series of words they should remember. Once generated, their identity data should
 local browser in a secure manner.)</p>
 
 More Info at <a href='https://github.com/OpenBazaar/openbazaar-web/issues/4'>github issue</a></aside>
-          <footer>Jason Hotelling</footer>
-
+          <footer>2018 Jason Hotelling</footer>
         </div>
       </div>
     );

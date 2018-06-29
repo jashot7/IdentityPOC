@@ -1,6 +1,8 @@
 html {
   background: black;
   color: white;
+  font-family: monospace;
+  font-size: 1.5em;
 }
 
 .App {
@@ -17,7 +19,6 @@ html {
 
 .App-header {
   background-color: #222;
-  padding: 20px;
   color: white;
 }
 
@@ -27,6 +28,12 @@ html {
 
 .App-intro {
   font-size: large;
+}
+
+.aside-generate {
+  text-align: center;
+  color:white;
+
 }
 
 /** Simple Spy Animation */
@@ -63,13 +70,12 @@ html {
     "section"
     "aside-2"
     "footer";
-  grid-template-rows: 100px 60px auto 130px 60px;
+  grid-template-rows: 100px 100px auto 250px 100px;
 }
 
 @media (min-width: 700px) {
   .grid-container {
     > * {
-      border: 5px solid rgba(50,50,50,0.5);
       padding: 5px;
     }
 
@@ -79,6 +85,8 @@ html {
       "section section section"
       "aside-2 aside-2 aside-2"
       "footer footer footer";
+
+    grid-template-rows: 100px 100px auto 170px 100px;
   }
 }
 
@@ -86,7 +94,16 @@ header {
   grid-area: header;
 }
 
+aside {
+  background-color: rgb(50,50,50);
+  margin: 5px;
+  padding: 10px;
+  text-align: start;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: medium;
+}
 aside:nth-of-type(1) {
+  background-color: black;
   grid-area: aside-1;
 }
 
@@ -100,6 +117,8 @@ aside:nth-of-type(2) {
 
 footer {
   grid-area: footer;
+  font-size: 0.5em;
+  color: grey;
 }
 
 .values-container {

@@ -1,6 +1,8 @@
 html {
   background: black;
-  color: white; }
+  color: white;
+  font-family: monospace;
+  font-size: 1.5em; }
 
 .App {
   text-align: center; }
@@ -13,7 +15,6 @@ html {
 
 .App-header {
   background-color: #222;
-  padding: 20px;
   color: white; }
 
 .App-title {
@@ -21,6 +22,10 @@ html {
 
 .App-intro {
   font-size: large; }
+
+.aside-generate {
+  text-align: center;
+  color: white; }
 
 /** Simple Spy Animation */
 .element-animation {
@@ -44,19 +49,28 @@ html {
   grid-gap: 15px;
   height: 100vh;
   grid-template-areas: "header" "aside-1" "section" "aside-2" "footer";
-  grid-template-rows: 100px 60px auto 130px 60px; }
+  grid-template-rows: 100px 100px auto 250px 100px; }
 
 @media (min-width: 700px) {
   .grid-container {
-    grid-template-areas: "header header header" "aside-1 aside-1 aside-1" "section section section" "aside-2 aside-2 aside-2" "footer footer footer"; }
+    grid-template-areas: "header header header" "aside-1 aside-1 aside-1" "section section section" "aside-2 aside-2 aside-2" "footer footer footer";
+    grid-template-rows: 100px 100px auto 170px 100px; }
     .grid-container > * {
-      border: 5px solid rgba(50, 50, 50, 0.5);
       padding: 5px; } }
 
 header {
   grid-area: header; }
 
+aside {
+  background-color: #323232;
+  margin: 5px;
+  padding: 10px;
+  text-align: start;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: medium; }
+
 aside:nth-of-type(1) {
+  background-color: black;
   grid-area: aside-1; }
 
 section {
@@ -66,7 +80,9 @@ aside:nth-of-type(2) {
   grid-area: aside-2; }
 
 footer {
-  grid-area: footer; }
+  grid-area: footer;
+  font-size: 0.5em;
+  color: grey; }
 
 .values-container {
   display: grid;

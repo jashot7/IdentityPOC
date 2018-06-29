@@ -22,7 +22,7 @@
 
     &.key {
       flex: 0 0 auto;
-      color: greenyellow;
+      color: green;
       text-align: right;
       // border: 1px solid green;
     }
@@ -30,7 +30,7 @@
     &.value {
       flex: 1 0 auto;
       // border: 1px solid blue;
-      color: blue;
+      color: white;
 
       @media (max-width: 700px) {
         align-self: flex-start;

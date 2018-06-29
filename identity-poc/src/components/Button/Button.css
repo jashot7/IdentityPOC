@@ -1,3 +1,6 @@
 .generate-button {
-  border: 1px solid black;
+  border: 1px solid white;
+  color: green;
+  background-color: black;
+  font-size: 1.5rem;
   padding: 15px; }
