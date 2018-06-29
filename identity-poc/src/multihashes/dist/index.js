@@ -68,7 +68,7 @@ var Multihashes =
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+
 /* WEBPACK VAR INJECTION */(function(global) {/*!
  * The buffer module from node.js, for the browser.
  *
@@ -1872,7 +1872,7 @@ module.exports = __webpack_require__(2);
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+
 /* WEBPACK VAR INJECTION */(function(Buffer) {/**
  * Multihash implementation in JavaScript.
  *
@@ -2132,7 +2132,7 @@ module.exports = g;
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+
 
 
 exports.byteLength = byteLength
@@ -2530,7 +2530,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+
 /* eslint quote-props: off */
 /* eslint key-spacing: off */
 
@@ -3593,9 +3593,9 @@ function encode(num, out, offset) {
     num >>>= 7
   }
   out[offset] = num | 0
-  
+
   encode.bytes = offset - oldOffset + 1
-  
+
   return out
 }
 

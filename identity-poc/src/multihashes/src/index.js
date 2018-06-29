@@ -3,7 +3,7 @@
  *
  * @module multihash
  */
-'use strict'
+
 
 const bs58 = require('bs58')
 

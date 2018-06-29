@@ -1,6 +1,6 @@
 /* eslint quote-props: off */
 /* eslint key-spacing: off */
-'use strict'
+
 
 exports.names = Object.freeze({
   'sha1':       0x11,
